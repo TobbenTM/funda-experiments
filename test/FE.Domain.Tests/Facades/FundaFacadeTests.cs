@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FE.Domain.Configuration;
 using FE.Domain.Facades;
+using Microsoft.Extensions.Options;
+using Moq;
 using Xunit;
 
 namespace FE.Domain.Tests.Facades
@@ -22,10 +24,16 @@ namespace FE.Domain.Tests.Facades
             // Sorta ugly way to create configuration, doing it this way in the interest of time
             var configuration = new FundaConfiguration
             {
-                ApiKey = Environment.GetEnvironmentVariable("ASPNETCORE__Funda__ApiKey"),
+                ApiKey = Environment.GetEnvironmentVariable("Funda__ApiKey"),
             };
 
-            _facade = new FundaFacade(client, configuration);
+            var factoryMock = new Mock<IHttpClientFactory>();
+            factoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(client);
+
+            var optionsMock = new Mock<IOptionsMonitor<FundaConfiguration>>();
+            optionsMock.Setup(o => o.CurrentValue).Returns(configuration);
+
+            _facade = new FundaFacade(factoryMock.Object, optionsMock.Object);
         }
 
         [Fact]

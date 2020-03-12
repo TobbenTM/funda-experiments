@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FE.Domain.Configuration;
 using FE.Domain.Facades.Models.Funda;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Extensions.Http;
@@ -22,13 +23,13 @@ namespace FE.Domain.Facades
         private readonly HttpClient _httpClient;
         private readonly string _anbodPath;
 
-        public FundaFacade(HttpClient httpClient, FundaConfiguration configuration)
+        public FundaFacade(IHttpClientFactory httpClientFactory, IOptionsMonitor<FundaConfiguration> configuration)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient();
 
             // Only doing this here because I'm not creating a custom HttpClient
             _httpClient.BaseAddress = new Uri(BaseUrl);
-            _anbodPath = $"/feeds/Aanbod.svc/json/{configuration.ApiKey}";
+            _anbodPath = $"/feeds/Aanbod.svc/json/{configuration.CurrentValue.ApiKey}";
         }
 
         public async Task<AanbodPage> GetAanbod(string query, int page, int pageSize = 25, CancellationToken cancellationToken = default)

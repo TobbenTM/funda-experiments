@@ -9,7 +9,8 @@ namespace FE.Domain.Infrastructure
     {
         public static IServiceCollection InstallFundaServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<FundaConfiguration>(conf => configuration.Bind("Funda", conf));
+            services.Configure<FundaConfiguration>(configuration.GetSection("Funda"));
+            services.AddHttpClient();
             services.AddTransient<IFundaFacade, FundaFacade>();
             services.AddTransient<ITopTenService, TopTenService>();
 
