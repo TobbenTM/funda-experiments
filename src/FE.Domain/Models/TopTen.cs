@@ -11,7 +11,6 @@ namespace FE.Domain.Models
 
         public bool DoneCalculating => TotalAdsCalculated == TotalAdsToCalculate;
 
-        // Using tuples here in the interest of time
-        public (string name, int numberOfAds)[] Leaderboard { get; set; }
+        public Ranking[] Leaderboard { get; set; }
     }
 }

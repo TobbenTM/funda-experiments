@@ -39,8 +39,8 @@ namespace FE.Domain.Tests
             // Assert
             for (var i = 0; i < lastResult.Leaderboard.Length; i++)
             {
-                Assert.Equal(leaderboardNames[i], lastResult.Leaderboard[i].name);
-                Assert.Equal(leaderboardScores[i], lastResult.Leaderboard[i].numberOfAds);
+                Assert.Equal(leaderboardNames[i], lastResult.Leaderboard[i].AgentName);
+                Assert.Equal(leaderboardScores[i], lastResult.Leaderboard[i].NumberOfAds);
             }
         }
 

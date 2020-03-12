@@ -22,12 +22,15 @@ export default class Leaderboard extends Component {
 
     this.setState({ hubConnection }, () => {
       // Register a listener for new leaderboard updates
-      this.state.hubConnection.on('LeaderboardUpdated', topTen => this.setState({
-        totalAdsToCalculate: topTen.totalAdsToCalculate,
-        totalAdsCalculated: topTen.totalAdsCalculated,
-        doneCalculating: topTen.doneCalculating,
-        leaderboard: topTen.leaderboard,
-      }));
+      this.state.hubConnection.on('LeaderboardUpdated', topTen => {
+        console.log('Leaderboard updated', topTen);
+        this.setState({
+          totalAdsToCalculate: topTen.totalAdsToCalculate,
+          totalAdsCalculated: topTen.totalAdsCalculated,
+          doneCalculating: topTen.doneCalculating,
+          leaderboard: topTen.leaderboard,
+        });
+      });
 
       // Connect to the hub, then invoke the calculation
       this.state.hubConnection.start()
@@ -46,8 +49,8 @@ export default class Leaderboard extends Component {
     return (
       <div>
         <ol>
-          {this.state.leaderboard.map(agent => (
-            <li>{agent.name}, {agent.numberOfAds} ads</li>
+          {this.state.leaderboard.map(ranking => (
+            <li key={ranking.agentId}>{ranking.agentName}, {ranking.numberOfAds} ads</li>
           ))}
         </ol>
         <p>{this.state.totalAdsCalculated} of {this.state.totalAdsToCalculate} calculated</p>

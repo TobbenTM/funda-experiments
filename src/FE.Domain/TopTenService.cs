@@ -46,10 +46,18 @@ namespace FE.Domain
 
                 currentState.Leaderboard = leaderboard
                     .OrderByDescending(kv => kv.Value)
-                    .Select(kv => (kv.Key.agentName, kv.Value))
+                    .Take(10)
+                    .Select(kv => new Ranking
+                    {
+                        AgentId = kv.Key.agentId,
+                        AgentName = kv.Key.agentName,
+                        NumberOfAds = kv.Value,
+                    })
                     .ToArray();
 
                 yield return currentState;
+
+                currentPage += 1;
             } while (page.Paging.HasMore);
         }
     }
