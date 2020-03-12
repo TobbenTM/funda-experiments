@@ -6,6 +6,8 @@ Some experiments using the Funda API.
 
 * .Net Core >= 3.1
 * Node.js >= 12.0
+* Funda API key
+  - Should be put in `appsettings.json` or preferable environment variables
 
 ## Running
 
